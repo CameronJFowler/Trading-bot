@@ -1,0 +1,29 @@
+# Crypto SMA Trading Bot (BTC CSV)
+
+A structured crypto trading bot with a desktop GUI for backtesting a volatility-targeted Simple Moving Average crossover strategy on Bitcoin CSV data. Built with Python, pandas, numpy, and Tkinter, this project is designed as a practical research tool. You load a BTC CSV file, select fast and slow moving averages, and immediately receive performance metrics and a full trade breakdown.
+
+The strategy uses a classic fast and slow SMA crossover. It goes long when the Fast SMA is above the Slow SMA. It goes short only when the Slow SMA is significantly above the Fast SMA using an asymmetric rule: 1.2 multiplied by the Fast SMA must be less than the Slow SMA. This filter reduces noise in short entries. Raw positions are clipped between -1 and +1.
+
+Position sizing is volatility-targeted rather than fixed. Rolling volatility is calculated over a 20-day window. The strategy targets 20 percent annualised volatility, adjusted to a daily equivalent using 365 trading days. Exposure is capped at 30 percent to prevent excessive leverage during low-volatility regimes. Transaction costs are modelled at 5 basis points per turnover and applied whenever effective exposure changes. This ensures results remain realistic and penalises overtrading.
+
+The bot calculates a full set of performance metrics including Sharpe Ratio, Total Return, Maximum Drawdown, Calmar Ratio, Win Rate, Signal Exposure, and Average Absolute Exposure. All statistics are annualised using 365 trading days. In addition to summary metrics, the application builds a detailed trade log. For each completed trade it records side, entry date, entry price, exit date, exit price, trade PnL, maximum drawdown during the trade, and average exposure across the trade duration. This allows deeper inspection beyond headline returns.
+
+The CSV file must contain a Date column and a Close column. Date values must be parseable as datetime. Close values must be numeric. Duplicate dates are removed and rows with missing Close values are dropped automatically.
+
+To install dependencies, run:
+
+pip install pandas numpy
+
+Tkinter is included with most Python installations. If it is not available, install it separately depending on your operating system.
+
+To run the application:
+
+python strategy.py
+
+This launches the desktop GUI. Load your BTC CSV file, set the Fast and Slow SMA values, and click Run. Metrics will appear at the top of the window and the full trade table will populate below.
+
+Default parameters are Fast SMA 10, Slow SMA 50, rolling volatility window 20 days, target annual volatility 20 percent, maximum exposure 30 percent, and transaction cost 5 basis points. These can be modified in the configuration section of the script.
+
+This project is not intended to be a production trading engine. It is a clean, modular research framework demonstrating signal construction, volatility scaling, risk control, performance evaluation, trade analytics, and GUI integration with quantitative logic. It is structured for readability and can be extended with features such as equity curve plotting, parameter grid search, walk-forward validation, Monte Carlo robustness testing, multi-asset support, or out-of-sample evaluation.
+
+For research and educational purposes only. This is not financial advice. Cryptocurrency markets are volatile and high risk.
